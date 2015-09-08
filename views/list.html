@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>To do list</title>
+	<script src="/vendor/jquery/dist/jquery.min.js"></script>
+  	<!-- Underscore -->
+  	<script src="/vendor/underscore/underscore.js"></script>
+  	<!-- Bootstrap JS -->
+  	<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  	<!-- Bootstrap CSS -->
+  	<link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+ 	<!-- My CSS -->
+  	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+  	<script src="/static/js/app.js"></script>
+</head>
+<body>
+	<div id="page-wrapper" class="container">
+		<br><h1>What are you going to do today?</h1>
+		<form>
+			<input type="text" name="task_name" id="task_name" placeholder="Enter task name">
+			<input type="text" name="task_description" id="task_description" placeholder="Enter task description">
+			<input type="text" name="task_priority" id="task_priority" placeholder="Enter task priority">
+			<button type="submit">Add new task!</button>
+		</form>
+		<div id="list_goes_here"></div>
+	</div>
+	<script type="text/template" id="task-template">
+
+		<div class="task"> 
+			<b><%= task =></b><br> 
+			description: <%= description => 
+		</div><br>
+	</script>
+</body>
+
+</html>

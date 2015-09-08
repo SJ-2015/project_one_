@@ -13,6 +13,25 @@ app.use("/vendor", express.static("bower_components"));
 /* body parser config to accept all datatypes */
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* Hardcoded data for testing */
+var tasks = [
+  { name: "Walk Miko",
+    description: "Miko needs to be walked for 30 minutes daily",
+    priority: 2
+  },
+  {
+    name: "Complete GA homework",
+    description: "Read the homework",
+    priority: 1
+  },
+  {
+    name: "Watch TV",
+    description: "Relax and watch television",
+    priority: 5
+  }
+]
+
+
 /* home page */
 app.get("/", function (req, res){
   // render index.html
@@ -30,6 +49,12 @@ app.get("/login", function(req, res){
   console.log("you requested the login page");
 	res.sendFile(path.join(views,'login.html'));
 });
+
+/* list page */
+app.get("/list", function(req, res){
+  res.sendFile(path.join(views, 'list.html'));
+});
+
 
 /* Where the user submits the sign up form */
 app.post(["/users", "/signup"], function signup(req, res) {
@@ -67,6 +92,11 @@ app.post(["/sessions", "/login"], function login(req, res) {
   db.User.authenticate(email, password, function (err, user) {
     res.send(email + " is logged in\n");
   });
+});
+
+/* Post data to the list page */
+app.post("/list", function(req, res){
+  res.send(tasks);
 });
 
 var listener = app.listen(3000, function () {
