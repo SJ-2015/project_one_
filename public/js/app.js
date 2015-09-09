@@ -5,12 +5,18 @@ $(function(){
 	
 	//goToSignup();
 	//goToLogin();
-	signupSubmission();
-	
+	//signupSubmission();
+
+	/* LIST FUNCTION */
 	listLoad();
 
 });
 
+////////////////////////////////////////////
+///										////
+///	 	Routing between pages			////
+///										////
+////////////////////////////////////////////
 
 /* Routes home page to signup page */
 function goToSignup()
@@ -40,6 +46,12 @@ function goToLogin()
 	});
 }
 
+////////////////////////////////////////////
+///										////
+///	 Methods for our SIGNUP page here	////
+///										////
+////////////////////////////////////////////
+
 /* Handles the signup form submission */
 function signupSubmission()
 {
@@ -55,39 +67,157 @@ function signupSubmission()
 	});
 }
 
+////////////////////////////////////////////
+///										////
+///	 Methods for MODIFY TASK here		////
+///										////
+////////////////////////////////////////////
+
+function modifyTask(context)
+{
+	//console.log(arguments, "arguments")
+	//console.log($(context))
+	var taskId = $(context).data()._id;
+	var taskDivId = "#task" + taskId;
+	console.log("id: " + taskDivId);
+
+	$.get("/modify-task", function(res){
+		console.log(res);
+		$("body").append(res);
+
+		modifySubmit(taskId);
+	});
+
+
+
+}
+
+function modifySubmit(id)
+{
+	$("#modify-task-form").on("submit", function(e){
+		console.log("you would like to modify a task!");
+		e.preventDefault();
+
+		$.ajax({
+	    	type: 'PUT',
+	    	url: '/modify-task/' + id,
+	    	data: {
+	     		name: updatedWord,
+	      		description: updatedDefinition
+	    	},
+	    	success: function(data) {
+	      		
+	    	}
+	  	});	
+	});
+}
+
+////////////////////////////////////////////
+///										////
+///	 Methods for our TO DO LIST here	////
+///										////
+////////////////////////////////////////////
+
+
 /* post request to list */
 function listLoad()
 {
-	$.post("/list", function(res){
+	getTasks();
+
+	$("#new-task-form").on("submit", function(e){
+		console.log("you want to create a new task!");
+		e.preventDefault();
+
+		$.post("/list", $(this).serialize())
+		.done(function(res){
+			getTasks();
+			$("#new-task-form")[0].reset();
+		});
+	});
+}
+
+function getTasks()
+{
+	$.get("/list-api", function(res){
 		renderData(res);
 	});
 }
 
-
 /* Render data to page */
 function renderData(data)
 {
-	var template = _.template($("#task-template").html());
+	console.log(data);
+
+	bubbleSort(data);
+	template = _.template($("#task-template").html());
 	var taskItems = data.map(function(task){
-		return template(task);
+		var templateHtml = template(task);
+
+		//console.log(templateHtml);
+		return templateHtml;
 	});
 
 	$("#list_goes_here").html('');
 	$("#list_goes_here").append(taskItems);
+	
 
-
-
-	// data.forEach(function(element){
-	// 	$("#list_goes_here").append("<div class='task'><b>" + element.name + "</b><br>Description: " + element.description + "<br></div><br>");
-
-	// });
 }
 
+/* Using bubble sort algorithm to sort tasks by priority */
+function bubbleSort(list)
+{
+	if(list.length != 0)
+	{
+		var currentIndex = 0;
+		var lastIndex = list.length - 1;
 
+		//debugger;
 
+		while(currentIndex != lastIndex)
+		{
+			for(var i=1; i<=lastIndex; i++)
+			{
+				var current = i;
+				var previous = current-1;
 
+				if(list[previous].priority >list[current].priority)
+				{
+					var temp = list[previous];
+					list[previous] = list[current];
+					list[current] = temp;
+				}
+			}
 
+			//debugger;
+			currentIndex++;
+			//console.log(list);
+		}
+	}
 
+	return list;
+	
+}
+
+/* deleting a task */
+function deleteTask(context)
+{
+	console.log($(context));
+	var taskId = $(context).data()._id;
+	console.log("id: " + taskId);
+
+	$.ajax({
+		url: '/list/' + taskId,
+		type: 'DELETE',
+		success: function(res){
+			//once successful, re-render all tasks
+			getTasks();
+		},
+		error: function(res){
+			getTasks();
+		}
+	});
+
+}
 
 
 

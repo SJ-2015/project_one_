@@ -15,7 +15,7 @@
 <body>
 	<div id="page-wrapper" class="container">
 		<br><h1>What are you going to do today?</h1>
-		<form>
+		<form id="new-task-form">
 			<input type="text" name="task_name" id="task_name" placeholder="Enter task name">
 			<input type="text" name="task_description" id="task_description" placeholder="Enter task description">
 			<input type="text" name="task_priority" id="task_priority" placeholder="Enter task priority">
@@ -24,11 +24,14 @@
 		<div id="list_goes_here"></div>
 	</div>
 	<script type="text/template" id="task-template">
-
 		<div class="task"> 
-			<b><%= task =></b><br> 
-			description: <%= description => 
-		</div><br>
+			<b> <%= name %> </b><br> 
+			Description: <%= description %>
+			<br>
+			<button data-_id="<%= _id %>" onclick="modifyTask(this)" type="button">modify</button>
+			<button data-_id="<%= _id %>" onclick="deleteTask(this)" type="button">Finished Task!</button>
+		</div>
+		<div id="task<%= _id %>"></div><br>
 	</script>
 </body>
 
