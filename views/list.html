@@ -27,9 +27,9 @@
 		<div class="task"> 
 			<b> <%= name %> </b><br> 
 			Description: <%= description %>
-			<br>
+			<br><br>
 			<button data-_id="<%= _id %>" onclick="modifyTask(this)" type="button">modify</button>
-			<button data-_id="<%= _id %>" onclick="deleteTask(this)" type="button">Finished Task!</button>
+			<button data-_id="<%= _id %>" onclick="deleteTask(this)" type="button">Finished Task!</button><br><br>
 		</div>
 		<div id="task<%= _id %>"></div><br>
 	</script>

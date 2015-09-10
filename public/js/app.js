@@ -55,14 +55,18 @@ function goToLogin()
 /* Handles the signup form submission */
 function signupSubmission()
 {
-	$("button#sign_up").click(function(e){
-		console.log("entry submitted!");
+	$("#signup-form").on("submit", function(e){
+		console.log("you are trying to sign up!");
 
 		e.preventDefault();
 
-		$.post(["/users", "/signup"], $(this).serialize())
+		var formVariables = $(this).serialize();
+		console.log("form variables:", formVariables);
+
+		$.post("/users", formVariables)
 		.done(function(res){
 			console.log(res);
+			
 		});
 	});
 }
@@ -73,6 +77,7 @@ function signupSubmission()
 ///										////
 ////////////////////////////////////////////
 
+/* User clicked on modify task */
 function modifyTask(context)
 {
 	//console.log(arguments, "arguments")
@@ -81,8 +86,10 @@ function modifyTask(context)
 	var taskDivId = "#task" + taskId;
 	console.log("id: " + taskDivId);
 
+	/* we send a get request for the form */
 	$.get("/modify-task", function(res){
-		console.log(res);
+		//console.log(res);
+		/* we append the form to the page */
 		$("body").append(res);
 
 		modifySubmit(taskId);
@@ -98,15 +105,17 @@ function modifySubmit(id)
 		console.log("you would like to modify a task!");
 		e.preventDefault();
 
+		var formVariables = $("#modify-task-form").serialize();
+		console.log("form variables:", formVariables);
+		// console.log("form variable type:", typeof(formVariables));
+		
+
 		$.ajax({
 	    	type: 'PUT',
 	    	url: '/modify-task/' + id,
-	    	data: {
-	     		name: updatedWord,
-	      		description: updatedDefinition
-	    	},
+	    	data: formVariables,
 	    	success: function(data) {
-	      		
+	      		getTasks();
 	    	}
 	  	});	
 	});

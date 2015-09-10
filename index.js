@@ -2,6 +2,7 @@ var express = require('express'),
 	path = require("path"),
     bodyParser = require('body-parser'),
     db = require("./models"),
+    session = require('express-session'),
     app = express(),
     views = path.join(process.cwd(), "views/");
 
@@ -12,6 +13,39 @@ app.use("/vendor", express.static("bower_components"));
 
 /* body parser config to accept all datatypes */
 app.use(bodyParser.urlencoded({ extended: true }));
+
+/* create our session */
+app.use(
+  session({
+    secret: 'super-secret-private-keyyy',
+    resave: false,
+    saveUnitialized: true
+  })
+);
+
+/* extending the `req` object to help manage sessions */
+app.use(function (req, res, next) {
+  // login a user
+  req.login = function (user) {
+    req.session.userId = user._id;
+  };
+  // find the current user
+  req.currentUser = function (cb) {
+    db.User.
+      findOne({ _id: req.session.userId },
+      function (err, user) {
+        req.user = user;
+        cb(null, user);
+      })
+  };
+  // logout the current user
+  req.logout = function () {
+    req.session.userId = null;
+    req.user = null;
+  }
+  // call the next middleware in the stack
+  next(); 
+});
 
 ////////////////////////////////////////////
 ///                                     ////
@@ -67,7 +101,7 @@ app.get("/login", function(req, res){
 
 /* get list page - HTML endpoint */
 app.get("/list", function(req, res){
-  res.sendFile(path.join(views, 'list.html'));
+  res.sendFile(views + '/list.html');
 });
 
 /* get list page - API endpoint */
@@ -75,12 +109,8 @@ app.get("/list-api", function(req,res){
   db.Task.find({}, function(err,tasks){
     if(err)
     {
-      res.sendStatus(200);
+      console.log(err);
     }
-    // if(tasks.length === 0)
-    // {
-    //   res.send("No more tasks");
-    // }
 
     res.send(tasks);
   });
@@ -99,39 +129,46 @@ app.get("/modify-task", function(req, res){
 
 /* where the user submits the SIGN UP form */
 app.post(["/users", "/signup"], function signup(req, res) {
+
   // grab the user from the params
-  console.log("request body: " + req.body);
   var user = req.body.user;
-  console.log("user: " + user);
+  console.log("user:", user);
 
   // pull out their email & password
   var email = user.email;
-  console.log("email: " + email);
-
   var password = user.password;
-  console.log("password: " + password);
+
+  // console.log("email:", email);
+  // console.log("password:", password);
 
   // create the new user
-  db.User.createSecure(email, password, function(err) {
-    if(err)console.log(err);
-
-    //console.log("new user created: " + user);
-    res.redirect("/home");
+  db.User.createSecure(email, password, function() {
+    console.log(email + " is registered!\n");
+      
+    res.redirect("/list");
   });
 
 });
 
 /* where the user submits the LOGIN form */
 app.post(["/sessions", "/login"], function login(req, res) {
-  //console.log("req: " + req);
-  var user = req.body.username;
-  //console.log("user : " + user);
+  var user = req.body.user;
   var email = user.email;
-  //console.log("email: " + email);
   var password = user.password;
-  console.log("password: " + password);
   db.User.authenticate(email, password, function (err, user) {
-    res.send(email + " is logged in\n");
+    if(err)
+    {
+      console.log(err);
+      res.send(err);
+    }
+    else //don't login the user unless the password is correct!
+    {
+      // login the user
+      req.login(user);
+      // redirect to user profile
+      res.redirect("/list"); 
+    }
+    
   });
 });
 
@@ -167,6 +204,7 @@ app.post("/list", function(req, res){
 ///                                     ////
 ////////////////////////////////////////////
 
+/* delete a task from the list */
 app.delete("/list/:id", function(req, res){
   var targetId = req.params.id;
   console.log(targetId);
@@ -197,7 +235,31 @@ app.delete("/list/:id", function(req, res){
 ///                                     ////
 ////////////////////////////////////////////
 
+/* Updating tasks on the list */
 app.put("/modify-task/:id", function(req, res){
+  var taskId = req.params.id;
+  console.log("task id to modify:", taskId);
+
+  //console.log("request body:", req.body);
+  var updatedName = req.body.updated_name;
+  var updatedDescription = req.body.updated_description;
+  var updatedPriority = req.body.updated_priority;
+
+  console.log("updated name:", updatedName);
+  console.log("updated description:", updatedDescription);
+  console.log("updated priority:", updatedPriority);
+
+  var updatedTask = {
+    name: updatedName,
+    description: updatedDescription,
+    priority: updatedPriority
+  }
+
+  db.Task.update({ _id: taskId}, updatedTask, {}, function(err, success) {
+      if(err){ return console.log(err);}
+      console.log("new task:", success);
+      res.send(success);
+  });
 
 });
 

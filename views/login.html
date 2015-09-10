@@ -10,18 +10,22 @@
   	<link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
   	
   	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
-  	<script src="/static/js/login.js"></script>
+  	<script src="/static/js/app.js"></script>
 </head>
 <body>
 	<div id="page-wrapper" class="container">
 		<br>
 		LOGIN HERE!
 		<br>
-		<form id="login-form">
-			<input type="text" name="username_" id="username_" placeholder="Enter username">
-			<input type="password" name="password_" id="password_" placeholder="Enter password">
-			<button name="login_" id="login_">Login</button>
-		</form>
+		<form method="post" action="/login" id="login-form">
+    		<div>
+      			<input type="text" name="user[email]">
+    		</div>
+    		<div>
+      			<input type="password" name="user[password]">
+   			 </div>
+    		<button>Login</button>
+  		</form>
 	</div>
 </body>
 </html>
