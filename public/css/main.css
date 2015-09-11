@@ -1,3 +1,36 @@
+body{
+	background-image: url(https://images.unsplash.com/reserve/m6rT4MYFQ7CT8j9m2AEC_JakeGivens%20-%20Sunset%20in%20the%20Park.JPG?q=80&fm=jpg&s=a8c0ccdc8b018bc32f848533bc1348ac);
+	background-size: 100%;
+}
+
+/* Home page */
+#homepage_title{
+	margin-top: 200px;
+	margin-right: 100px;
+	color: 303E73;
+	text-align: center;
+	font-size: 50px;
+}
+
+#separator{
+	font-size: 20px;
+	display:inline;
+	color: black;
+}
+
+a{
+	color: black;
+	font-size: 20px;
+}
+
+a:hover{
+	color:5C50C2;
+	text-decoration: none;
+}
+
+/**/
+
+/* List page */
 .task{
 	border: 1px solid;
 	background-color: rgba(200, 200, 200, 0.2);
@@ -24,25 +57,5 @@
 	height: 500px;
 }
 
-body{
-	background-image: url(https://images.unsplash.com/reserve/m6rT4MYFQ7CT8j9m2AEC_JakeGivens%20-%20Sunset%20in%20the%20Park.JPG?q=80&fm=jpg&s=a8c0ccdc8b018bc32f848533bc1348ac);
-	background-size: 100%;
-}
 
-#homepage_title{
-	margin-top: 200px;
-	margin-right: 100px;
-	color: 303E73;
-	text-align: center;
-	font-size: 50px;
-}
-
-a:link{
-	color: 303E73;
-	font-size: 20px;
-}
-
-a:hover{
-	color:black;
-}
 

@@ -99,9 +99,25 @@ app.get("/login", function(req, res){
 	res.sendFile(path.join(views,'login.html'));
 });
 
+/* logout route */
+// app.get("/logout", function(req,res){
+//   console.log("you are logging out now");
+//   req.session.userId = null;
+//   req.user = null;
+//   res.redirect("/login");
+// });
+
 /* get list page - HTML endpoint */
 app.get("/list", function(req, res){
-  res.sendFile(views + '/list.html');
+  var sessionId = req.session.userId;
+  if(sessionId === undefined || sessionId === null)
+  {
+    res.redirect("/login");
+  }
+  else
+  {
+    res.sendFile(views + '/list.html');
+  }
 });
 
 /* get list page - API endpoint */
@@ -142,9 +158,9 @@ app.post(["/users", "/signup"], function signup(req, res) {
   // console.log("password:", password);
 
   // create the new user
-  db.User.createSecure(email, password, function() {
+  db.User.createSecure(email, password, function(err, user) {
     console.log(email + " is registered!\n");
-      
+    req.login(user);
     res.redirect("/list");
   });
 
@@ -165,6 +181,7 @@ app.post(["/sessions", "/login"], function login(req, res) {
     {
       // login the user
       req.login(user);
+      console.log("session id after login:", req.session.userId);
       // redirect to user profile
       res.redirect("/list"); 
     }
@@ -174,9 +191,7 @@ app.post(["/sessions", "/login"], function login(req, res) {
 
 /* post data to the LIST page */
 app.post("/list", function(req, res){
-  //id++;
-  //console.log("post request received!");
-
+  
   taskName = req.body.task_name;
   taskDescription = req.body.task_description;
   taskPriority = req.body.task_priority;
@@ -192,11 +207,18 @@ app.post("/list", function(req, res){
     if(err)console.log(err);
     console.log("new task created: " + task);
     res.sendStatus(200);
-  });
-
-  
+  });  
 });
 
+/* logout */
+app.post("/logout", function(req, res){
+  console.log("you are logging out now");
+  req.session.userId = null;
+  req.user = null;
+  console.log('sanity');
+  res.redirect("/login");
+  //res.sendStatus(200);
+});
 
 ////////////////////////////////////////////
 ///                                     ////

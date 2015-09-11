@@ -1,4 +1,4 @@
-console.log("reading in app.js!");
+//console.log("reading in app.js!");
 
 
 $(function(){
@@ -48,7 +48,7 @@ function goToLogin()
 
 ////////////////////////////////////////////
 ///										////
-///	 Methods for our SIGNUP page here	////
+///	 	Methods for SIGNUP here			////
 ///										////
 ////////////////////////////////////////////
 
@@ -73,7 +73,20 @@ function signupSubmission()
 
 ////////////////////////////////////////////
 ///										////
-///	 Methods for MODIFY TASK here		////
+///	 	Methods for LOGOUT here			////
+///										////
+////////////////////////////////////////////
+
+function logoutRequested()
+{
+	window.location.href="/";
+	
+}
+
+
+////////////////////////////////////////////
+///										////
+///	   Methods for MODIFY TASK here		////
 ///										////
 ////////////////////////////////////////////
 
