@@ -15,17 +15,21 @@
 <body>
 	<div id="page-wrapper" class="container">
 		<br>
-		SIGNUP HERE!
-		<br>
-		<form method="post" action="/signup" id="signup-form">
-    		<div>
-      			<input type="text" name="user[email]">
-    		</div>
-    		<div>
-      			<input type="password" name="user[password]">
-   			 </div>
-    		<button>Signup</button>
-  		</form>
+			<div id="signup-form-wrapper">
+				<form method="post" action="/signup" id="signup-form" class="form">
+					<h1 id="signup-title">Signup Here</h1>
+					<br>
+	    			<div>
+	      				<input type="text" name="user[email]">
+	    			</div>
+	    			<br>
+	    			<div>
+	      				<input type="password" name="user[password]">
+	   			 	</div>
+	   			 	<br>
+	    			<button id="signup-button">Signup</button>
+	  			</form>
+  			</div>
 	</div>
 </body>
 </html>

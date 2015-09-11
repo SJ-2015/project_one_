@@ -104,7 +104,7 @@ function modifyTask(context)
 		//console.log(res);
 		/* we append the form to the page */
 		$("body").append(res);
-
+		$('.modifyContainer').toggleClass('hidden');
 		modifySubmit(taskId);
 	});
 
@@ -129,6 +129,9 @@ function modifySubmit(id)
 	    	data: formVariables,
 	    	success: function(data) {
 	      		getTasks();
+	      		$(".modify_button").click(function(){
+	      			$(".modifyContainer").toggleClass('hidden');
+	      		});
 	    	}
 	  	});	
 	});
@@ -156,6 +159,7 @@ function listLoad()
 			$("#new-task-form")[0].reset();
 		});
 	});
+
 }
 
 function getTasks()
@@ -223,7 +227,8 @@ function bubbleSort(list)
 /* deleting a task */
 function deleteTask(context)
 {
-	console.log($(context));
+	//console.log($(context));
+	console.log("deleteTask function entered");
 	var taskId = $(context).data()._id;
 	console.log("id: " + taskId);
 

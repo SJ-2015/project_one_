@@ -14,18 +14,19 @@
 </head>
 <body>
 	<div id="page-wrapper" class="container">
-		<br>
-		LOGIN HERE!
-		<br>
-		<form method="post" action="/login" id="login-form">
-    		<div>
-      			<input type="text" name="user[email]">
-    		</div>
-    		<div>
-      			<input type="password" name="user[password]">
-   			 </div>
-    		<button>Login</button>
-  		</form>
+    <div id="signup-form-wrapper">
+  		<form method="post" action="/login" id="login-form" class="form">
+          <h1 id="signup-title">Login Here</h1>
+          <br>
+      		<div>
+        			<input type="text" name="user[email]">
+      		</div>
+      		<div>
+        			<input type="password" name="user[password]">
+     			</div>
+      		<button>Login</button>
+    	</form>
+    </div>
 	</div>
 </body>
 </html>
