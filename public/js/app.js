@@ -104,8 +104,9 @@ function modifyTask(context)
 		//console.log(res);
 		/* we append the form to the page */
 		$("body").append(res);
-		$('.modifyContainer').toggleClass('hidden');
 		modifySubmit(taskId);
+	}).done(function(e){
+		$('.modifyContainer').toggleClass('hidden');
 	});
 
 
