@@ -105,7 +105,6 @@ function modifyTask(context)
 		/* we append the form to the page */
 		$("body").append(res);
 		modifySubmit(taskId);
-	}).done(function(e){
 		$('.modifyContainer').toggleClass('hidden');
 	});
 
@@ -130,9 +129,7 @@ function modifySubmit(id)
 	    	data: formVariables,
 	    	success: function(data) {
 	      		getTasks();
-	      		$(".modify_button").click(function(){
-	      			$(".modifyContainer").toggleClass('hidden');
-	      		});
+	      		$(".modifyContainer").toggleClass('hidden');
 	    	}
 	  	});	
 	});
